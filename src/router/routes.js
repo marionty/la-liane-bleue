@@ -22,7 +22,7 @@ const routes = [
       },
       {
         path: "/blogs/:slug",
-        component: () => import("pages/TestPage.vue"),
+        component: () => import("pages/BlogdetailPage.vue"),
       },
     ],
   },
