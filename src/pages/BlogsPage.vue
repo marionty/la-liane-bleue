@@ -1,7 +1,11 @@
 <template>
   <page-header title="Blog"></page-header>
   <q-page>
-    <div class="row justify-center" v-for="blog in blogs" :key="blog.id">
+    <div
+      class="row justify-center"
+      v-for="(blog, index) in blogs"
+      :key="blog.id"
+    >
       <BlogCard
         :url="`http://localhost:1337${blog.attributes.photo.data.attributes.url}`"
         :title="blog.attributes.title"
@@ -9,6 +13,7 @@
         :date="blog.attributes.date"
         :button="blog.attributes.button"
         :slug="blog.attributes.slug"
+        :isFirstBlog="index === 0"
       />
     </div>
   </q-page>

@@ -121,29 +121,27 @@ const tariffs = [
     duration: "1 semaine",
     night2Persons: "75€",
     night4Persons: "95€",
-    persons2: "520€",
-    persons4: "650€",
+    persons2: "525€",
+    persons4: "665€",
   },
   {
     duration: "2 semaines",
     night2Persons: "70€",
     night4Persons: "86€",
     persons2: "490€",
-    persons4: "600€",
+    persons4: "602€",
   },
   {
     duration: "3 semaines",
     night2Persons: "65€",
     night4Persons: "68€",
     persons2: "455€",
-    persons4: "475€",
+    persons4: "476€",
   },
   {
     duration: "4 semaines ou +",
     night2Persons: "61€",
     night4Persons: "66€",
-    persons2: "427€",
-    persons4: "462€",
   },
 ];
 

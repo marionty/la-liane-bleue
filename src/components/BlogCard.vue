@@ -1,52 +1,43 @@
 <template>
-  <q-card class="card-articles">
-    <q-card-section horizontal class="card-image">
-      <q-img :src="url" style="max-width: 450px"></q-img>
-      <q-card-section class="card-section">
-        <div class="text-h5">{{ title }}</div>
-        <div>{{ author }} - {{ date }}</div>
-        <div class="card-button">
-          <router-link :to="`/blogs/${slug}`">
-            <q-btn class="custom-button">{{ button }}</q-btn>
-          </router-link>
-        </div>
-      </q-card-section>
-    </q-card-section>
-  </q-card>
+  <div :class="isFirstBlog ? 'large-card' : 'small-card'">
+    <q-img :src="url" style="max-width: 100%"></q-img>
+
+    <div class="text-h5">{{ title }}</div>
+    <div>{{ author }} - {{ date }}</div>
+    <div class="card-button">
+      <router-link :to="`/blogs/${slug}`">
+        <q-btn class="custom-button">{{ button }}</q-btn>
+      </router-link>
+    </div>
+  </div>
 </template>
+
 <script setup>
-defineProps({
-  url: String,
-  title: String,
-  author: String,
-  date: String,
-  button: String,
-  slug: String,
-});
+import { defineProps } from "vue";
+
+const { url, title, author, date, button, slug, isFirstBlog } = defineProps([
+  "url",
+  "title",
+  "author",
+  "date",
+  "button",
+  "slug",
+  "isFirstBlog",
+]);
 </script>
+
 <style scoped>
-.card-articles {
+.large-card {
   width: 70%;
-  height: 300px;
+  height: 800px;
   margin-top: 50px;
   margin-bottom: 50px;
-  display: flex; /* Utilisez la mise en page flexbox */
+  display: flex;
   flex-direction: column;
 }
-.card-image {
-  width: 100%;
-  height: 100%;
-}
-.card-section {
-  margin: 20px;
-}
-.card-button {
-  display: flex;
-  justify-content: flex-end;
-}
-.custom-button {
-  background-color: #deb787;
-  padding: 10px 20px;
-  cursor: pointer;
+
+.small-card {
+  width: 30%; /* Largeur des petites cartes */
+  margin-right: 10px; /* Marge entre les cartes */
 }
 </style>

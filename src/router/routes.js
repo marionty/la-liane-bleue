@@ -20,9 +20,15 @@ const routes = [
         path: "/location2",
         component: () => import("pages/Location2Page.vue"),
       },
+
       {
         path: "/blogs/:slug",
         component: () => import("pages/BlogdetailPage.vue"),
+      },
+      {
+        path: "reservation",
+        name: "reservation",
+        component: () => import("pages/ReservationPage.vue"),
       },
     ],
   },

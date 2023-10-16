@@ -37,7 +37,7 @@ import { useRoute } from "vue-router";
 defineProps({
   rental: Object,
 });
-const route = useRoute();
+const router = useRoute();
 
 function getReservationLink(rentalId) {
   // Définissez ici la logique pour générer les liens en fonction de l'ID de la location
