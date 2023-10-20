@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2>Résumé de la réservation</h2>
-    <p><strong>Location:</strong> {{ location }}</p>
+
     <p><strong>Voyageurs:</strong> {{ travelers }}</p>
     <p><strong>Date de Départ:</strong> {{ formattedDepartureDate }}</p>
     <p><strong>Date d'Arrivée:</strong> {{ formattedArrivalDate }}</p>
@@ -76,7 +76,7 @@ const tariffs = [
   },
 ];
 
-const location = ref(route.query.location);
+
 const travelers = ref(route.query.travelers);
 const departureDate = ref(route.query.departureDate);
 const arrivalDate = ref(route.query.arrivalDate);

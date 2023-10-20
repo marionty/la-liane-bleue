@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-12 header">
         <div class="column justify-between full-height">
-          <div class="col-4 text-white text-center q-mt-xl">
+          <div class="col-12 col-md-4 text-white text-center q-mt-xl">
             <div class="text-h3">
               Location saisonnière de charme à l’ île de la Réunion.
             </div>
@@ -12,11 +12,11 @@
               offrent une vue imprenable sur l’océan Indien.
             </div>
           </div>
-          <div class="col-2">
+<div class="col-12 col-md-2">
             <LocationBar></LocationBar>
-          </div>
-        </div>
-      </div>
+   </div>
+   </div>
+  </div>
       <div class="col-12">
         <div class="text-h4 text-center q-py-lg">Nos locations</div>
       </div>
@@ -159,10 +159,7 @@ async function fetchRentals() {
 p {
   line-height: 2; /* Réglez la valeur selon votre préférence */
 }
-/*location-bar {
-  position: relative;
-  z-index: 2;
-}*/
+
 /*.header {
   position: relative; /* Position relative pour le conteneur
 }
