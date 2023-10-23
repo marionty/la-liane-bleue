@@ -1,58 +1,71 @@
 <template>
-  <div>
+   <div>
     <h2>Résumé de la réservation</h2>
 
     <p><strong>Voyageurs:</strong> {{ travelers }}</p>
+    <p><strong>Date d'arrivée:</strong> {{ formattedArrivalDate }}</p>
     <p><strong>Date de Départ:</strong> {{ formattedDepartureDate }}</p>
-    <p><strong>Date d'Arrivée:</strong> {{ formattedArrivalDate }}</p>
     <p><strong>Nombre de Nuits:</strong> {{ numberOfNights }}</p>
     <p><strong>Coût total :</strong> {{ totalCost }}€</p>
     <router-link to="/" class="button">Modifier la recherche</router-link>
   </div>
-  <div v-if="rental">
-    <q-img
-      :src="`http://localhost:1337${rental.attributes.cover.data.attributes.url}`"
-      height="300px"
-      fit="cover"
-    ></q-img>
+  <div>
+    <h2>Liste des logements disponibles</h2>
+    <div class="row justify-center location-card q-col-gutter-x-xl">
+    <div class="col-12 col-md-4" v-for="rental in rentals" :key="rental.id">
+      <q-card>
+        <q-img :src="`http://localhost:1337${rental.attributes.cover.data.attributes.url}`" alt="Photo du logement"></q-img>
+        <q-card-section>
+          <div class="text-h6">{{ rental.attributes.name }}</div>
+          <div>{{ rental.attributes.content }}</div>
+        </q-card-section>
+        <q-card-actions>
+          <q-btn
+            label="Réserver ce logement"
+            @click="createReservation(rental.id)"
+          />
+        </q-card-actions>
 
-    <q-card-section class="text-h6 text-center"
-      >Location {{ rental.attributes.name }}</q-card-section
-    >
-    <q-card-section class="content-section">{{
-      rental.attributes.content
-    }}</q-card-section>
+      </q-card>
+    </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { computed, ref, onMounted } from "vue";
+import axios from 'axios';
 import { useRoute } from "vue-router";
-import axios from "axios";
 
 const route = useRoute();
+const rentals = ref([]);
 
-const rental = ref(null);
-
-onMounted(async () => await fetchRental());
-
-async function fetchRental() {
-  try {
-    const response = await axios.get(
-      "http://localhost:1337/api/rentals?populate=cover"
-    );
-
-    if (response.status === 200 && response.data.data.length > 0) {
-      rental.value = response.data.data[0];
-    }
-  } catch (error) {
-    console.error(
-      "Une erreur est survenue lors de la récupération des données de location:",
-      error
-    );
-  }
+async function getRentals() {
+  const response = await axios.get("http://localhost:1337/api/rentals?populate=cover");
+  rentals.value = response.data.data;
 }
+onMounted(async () => {
+  await getRentals();
+});
 
+
+async function createReservation(rentalId) {
+  // Convertir les dates d'arrivée et de départ en format "YYYY-MM-DD"
+  const arrivalDate = new Date(route.query.arrivalDate).toISOString().split('T')[0];
+  const departureDate = new Date(route.query.departureDate).toISOString().split('T')[0];
+
+  const data = {
+    arrivalDate: arrivalDate,
+    departureDate: departureDate,
+      travelers: parseFloat(route.query.travelers),
+      rental : rentalId,
+
+    }
+  const response = await axios.post("http://localhost:1337/api/reservations", {data},
+        );
+
+  console.log(response.data.data);
+}
 const tariffs = [
   {
     maxNights: 7,
@@ -91,10 +104,16 @@ const formattedDepartureDate = computed(() => formatDate(departureDate.value));
 const formattedArrivalDate = computed(() => formatDate(arrivalDate.value));
 
 const numberOfNights = computed(() => {
-  const date1 = new Date(departureDate.value);
-  const date2 = new Date(arrivalDate.value);
+  const date1 = new Date(arrivalDate.value); // Commencez par la date d'arrivée
+  const date2 = new Date(departureDate.value);
   const differenceInTime = date2.getTime() - date1.getTime();
-  return differenceInTime / (1000 * 3600 * 24);
+
+  if (differenceInTime < 0) {
+    console.warn("La date d'arrivée est après la date de départ.");
+    return 0; // Vous pouvez choisir de retourner 0 ou de traiter autrement cette situation
+  }
+
+  return Math.round(differenceInTime / (1000 * 3600 * 24));
 });
 
 const applicableTariff = computed(() => {
@@ -114,4 +133,10 @@ const totalCost = computed(() => {
   }
   return 0; // par défaut, si le nombre de voyageurs n'est pas reconnu
 });
+
+
+
 </script>
+<style scoped>
+
+</style>

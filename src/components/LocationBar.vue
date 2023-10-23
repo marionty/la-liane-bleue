@@ -6,11 +6,9 @@
         @click="openArrivalPopup"
         style="padding-left: 10px;"
           v-model="arrivalDate"
-          mask="date"
+         mask="date"
           :rules="['date']"
           label="Date d'arrivée"
-
-
         >
           <template v-slot:prepend>
             <q-icon  name="event" class="cursor-pointer" style="padding-right: 10px;">
@@ -119,7 +117,6 @@ const makeReservation = () => {
   router.push({
     name: "reservation",
     query: {
-
       travelers: travelers.value,
       departureDate: departureDate.value,
       arrivalDate: arrivalDate.value,
