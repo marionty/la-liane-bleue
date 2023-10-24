@@ -42,7 +42,7 @@
             <q-btn text-color="black" class="q-mx-xs" flat>Contact</q-btn>
           </router-link>
         </div>
-
+        <router-link to="/login">
         <q-btn
           v-if="isWideScreen"
           style="background: #deb887"
@@ -52,6 +52,7 @@
         >
           Connexion
         </q-btn>
+        </router-link>
 
         <q-icon
           :name="showUserMenu ? 'another-icon-name' : biPersonCircle"

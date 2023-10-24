@@ -24,11 +24,29 @@ const routes = [
       {
         path: "/blogs/:slug",
         component: () => import("pages/BlogdetailPage.vue"),
+
       },
       {
-        path: "reservation",
+
+        path: "/reservation",
         name: "reservation",
         component: () => import("pages/ReservationPage.vue"),
+      },
+      {
+
+        path: "/login",
+        component: () => import("pages/LoginPage.vue"),
+      },
+      {
+
+        path: "/register/:reservationId",
+        name: "register",
+        component: () => import("pages/RegisterPage.vue"),
+      },
+      {
+
+        path: "/confirmation",
+        component: () => import("pages/ConfirmationPage.vue"),
       },
     ],
   },

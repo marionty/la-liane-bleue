@@ -53,8 +53,8 @@ function getReservationLink(rentalId) {
 
 <style scoped>
 .content-section {
-  padding-left: 60px; /* Ajoutez la quantité d'espace souhaitée à gauche */
-  padding-right: 60px; /* Ajoutez la quantité d'espace souhaitée à droite */
+  padding-left: 60px;
+  padding-right: 60px; 
 }
 .btn {
   display: flex;

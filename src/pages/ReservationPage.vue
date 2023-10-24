@@ -1,6 +1,6 @@
 <template>
    <div>
-    <h2>Résumé de la réservation</h2>
+    <h2>Information de la réservation</h2>
 
     <p><strong>Voyageurs:</strong> {{ travelers }}</p>
     <p><strong>Date d'arrivée:</strong> {{ formattedArrivalDate }}</p>
@@ -35,10 +35,13 @@
 <script setup>
 import { computed, ref, onMounted } from "vue";
 import axios from 'axios';
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+
 
 const route = useRoute();
+const router = useRouter();
 const rentals = ref([]);
+
 
 async function getRentals() {
   const response = await axios.get("http://localhost:1337/api/rentals?populate=cover");
@@ -57,15 +60,28 @@ async function createReservation(rentalId) {
   const data = {
     arrivalDate: arrivalDate,
     departureDate: departureDate,
-      travelers: parseFloat(route.query.travelers),
-      rental : rentalId,
+    travelers: parseFloat(route.query.travelers),
+    rental: rentalId,
+    status: "confirmed",
 
     }
   const response = await axios.post("http://localhost:1337/api/reservations", {data},
         );
 
-  console.log(response.data.data);
+navigateToUser(response.data.data.id)
+
 }
+
+const navigateToUser = (reservationId) => {
+  console.log(reservationId)
+  const routeData = {
+    name: 'register',
+    params: { reservationId: reservationId }
+  };
+  router.push(routeData);
+};
+
+
 const tariffs = [
   {
     maxNights: 7,
@@ -104,13 +120,13 @@ const formattedDepartureDate = computed(() => formatDate(departureDate.value));
 const formattedArrivalDate = computed(() => formatDate(arrivalDate.value));
 
 const numberOfNights = computed(() => {
-  const date1 = new Date(arrivalDate.value); // Commencez par la date d'arrivée
+  const date1 = new Date(arrivalDate.value);
   const date2 = new Date(departureDate.value);
   const differenceInTime = date2.getTime() - date1.getTime();
 
   if (differenceInTime < 0) {
     console.warn("La date d'arrivée est après la date de départ.");
-    return 0; // Vous pouvez choisir de retourner 0 ou de traiter autrement cette situation
+    return 0;
   }
 
   return Math.round(differenceInTime / (1000 * 3600 * 24));
