@@ -107,6 +107,7 @@ import { ref, onMounted } from "vue";
 import { biPersonCircle } from "@quasar/extras/bootstrap-icons";
 import FooterCard from "components/FooterCard.vue";
 
+
 const showMenu = ref(false);
 const showUserMenu = ref(false);
 

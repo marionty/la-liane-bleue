@@ -2,143 +2,194 @@
   <page-header title="Découvrez nos activités à Saint-Leu"></page-header>
   <q-page-container>
     <div class="row justify-center">
-      <div
-        class="col-12 col-md-5"
-        v-for="(activity, index) in activities"
-        :key="index"
-      >
-        <div class="q-pa-md">
-          <q-card>
-            <q-img :src="activity.image" :alt="activity.name" class="q-pa-md" />
-            <q-card-section>
-              <h3 class="text-h6">{{ activity.name }}</h3>
-              <p>{{ activity.description }}</p>
-            </q-card-section>
-          </q-card>
+  <div class="col-12 col-md-4" v-for="activite in activites" :key="activite.id">
+    <div class="activity-card q-ma-md">
+      <q-card>
+        <!-- Image en arrière-plan avec un overlay noir -->
+        <div class="card-image-container" :style="{ backgroundImage: 'url(http://localhost:1337' + activite.attributes.photo.data[0].attributes.formats.thumbnail.url + ')' }">
+          <div class="card-overlay">
+            <!-- Titre en grand en blanc sur l'overlay -->
+            <h3 class="text-h4 q-ma-none">{{ activite.attributes.name }}</h3>
+            <!-- Bouton en bas à droite -->
+            <q-btn class="activity-btn" label="{{ activite.attributes.button }}"></q-btn>
+          </div>
         </div>
-      </div>
+        <!-- Description en dessous de l'image -->
+        <q-card-section>
+          <p>{{ activite.attributes.description }}</p>
+        </q-card-section>
+      </q-card>
     </div>
-
-    <div v-if="weatherData" class="weather-card">
-
-    <div class="weather-content">
-      <div class="weather-icon">
-        <img :src="'https://openweathermap.org/img/w/' + weatherData.weather[0].icon + '.png'" :alt="weatherData.weather[0].description" />
-      </div>
-      <div class="weather-main">
-        <h3>{{ weatherData.main.temp }}°C</h3>
-        <p><strong>{{ weatherData.weather[0].description }}</strong></p>
-      </div>
-      <div class="weather-details">
-        <div>
-          <img src="path_to_humidity_icon.png" alt="Humidity">
-          <p>{{ weatherData.main.humidity }}%</p>
-        </div>
-        <div>
-          <img src="path_to_wind_icon.png" alt="Wind">
-          <p>{{ weatherData.wind.speed }} m/s</p>
-        </div>
-      </div>
-    </div>
-    <div>
-    <h2>actuelle à {{ weatherData.name }}</h2></div>
   </div>
-  </q-page-container>
+</div>
 
+    <div v-if="weather" class="weather-card">
+      <div
+        class="weather-details col-12 col-md-4 q-col-gutter-x-xl justify-center"
+      >
+        <div>
+          <q-icon :name="biMoisture" />
+          <p>{{ weather.main.humidity }}%</p>
+        </div>
+        <div>
+          <q-icon :name="biWind" />
+          <p>{{ weather.wind.speed }} m/s</p>
+        </div>
+      </div>
+      <div class="weather-content col-12 col-md-4">
+        <div class="weather-icon">
+          <img
+            :src="
+              'https://openweathermap.org/img/w/' +
+              weather.weather[0].icon +
+              '.png'
+            "
+            :alt="weather.weather[0].description"
+          />
+        </div>
+        <div class="weather-main">
+          <h3>{{ weather.main.temp }}°C</h3>
+          <p>
+            <strong>{{ weather.weather[0].description }}</strong>
+          </p>
+        </div>
+      </div>
+      <div class="text-h2 col-12 col-md-8">
+        actuelle à {{ weather.name }}
+      </div>
+    </div>
+  </q-page-container>
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref} from "vue";
 import axios from "axios";
 import PageHeader from "components/PageHeader.vue";
 
-const activities = ref([
-  {
-    name: "Randonnée au Piton de la Fournaise",
-    description:
-      "Partez à l'aventure et découvrez l'un des volcans les plus actifs au monde. La randonnée au Piton de la Fournaise est une expérience inoubliable.",
-    image: "activite1.jpg",
-  },
-  {
-    name: "Plongée sous-marine à Saint-Leu",
-    description:
-      "Explorez les fonds marins spectaculaires de Saint-Leu. La plongée sous-marine vous permettra de découvrir une faune et une flore marines exceptionnelles.",
-    image: "activite2.jpg",
-  },
-  {
-    name: "Dégustation de cuisine créole",
-    description:
-      "Ne manquez pas l'occasion de savourer la délicieuse cuisine créole de l'île de la Réunion. Les plats locaux sont un régal pour les papilles.",
-    image: "activite3.jpg",
-  },
-  {
-    name: "Dégustation de cuisine créole",
-    description:
-      "Ne manquez pas l'occasion de savourer la délicieuse cuisine créole de l'île de la Réunion. Les plats locaux sont un régal pour les papilles.",
-    image: "activite3.jpg",
-  },
-]);
 
-const weatherData = ref(null);
+
+const weather = ref(null);
 const error = ref(null);
-const city = ref("Saint-Leu");  // Changez cette valeur ou liez-la à un champ de saisie pour spécifier d'autres villes.
+const city = ref("Saint-Leu");
+import "weather-icons/css/weather-icons.css";
+import { biMoisture, biWind } from "@quasar/extras/bootstrap-icons";
+
+const activites = ref([]);
+
+
 
 onMounted(async () => {
   try {
-    const response = await axios.get("https://api.openweathermap.org/data/2.5/weather", {
+    const activitesResponse = await axios.get("http://localhost:1337/api/activites/?populate=photo");
+    if (activitesResponse.status === 200 && activitesResponse.data.data.length > 0) {
+      activites.value = activitesResponse.data.data;
+      console.log(activitesResponse.data);
+    }
+
+    const weatherResponse = await axios.get("https://api.openweathermap.org/data/2.5/weather", {
       params: {
         q: city.value,
         appid: "5126debd56b0f7f32045ca79bc1cf3c0",
-        units: "metric", // Pour obtenir les températures en Celsius
-        lang: "fr" // Pour obtenir les descriptions en français
-      }
+        units: "metric",
+        lang: "fr",
+      },
     });
-    weatherData.value = response.data;
+    weather.value = weatherResponse.data;
+
   } catch (err) {
-    error.value = "Erreur lors de la récupération des données météo: " + err;
+    error.value = "Erreur lors de la récupération des données: " + err;
   }
 });
 </script>
 
 <style scoped>
+.activity-card {
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.activity-card:hover {
+  transform: translateY(-10px);
+}
+
+.card-image-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* Rendre l'image responsive */
+  background-size: cover;
+  background-position: center;
+}
+
+.card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.4); /* Overlay noir avec transparence */
+  color: white;
+}
+
+.activity-btn {
+  align-self: flex-end; /* Aligner le bouton à droite */
+  background-color: #deb887;
+  color: white;
+}
+
 .q-pa-md {
   padding: 16px;
 }
-
 
 .weather-card {
   background-image: url("public/meteo.jpeg");
   background-size: cover;
   background-position: center;
+
   color: white;
   margin: 20px 0;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: row;
-  align-items: center;
-
+  justify-content: space-around;
 }
-
-.weather-icon, .weather-main, .weather-details {
-  flex: 1;
+.text-h2 {
+  margin-top: 200px;
+}
+.weather-icon,
+.weather-main,
+.weather-details {
   text-align: center;
 }
-
-.weather-background img {
-  width: 80px;
-  margin-bottom: 10px;
+.weather-icon img {
+  width: 100px;
+  height: auto;
 }
-
 .weather-details {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+}
+.q-icon {
+  font-size: 2.25rem;
+  color: white;
+  margin-bottom: 0.625rem;
 }
 
-.weather-error {
-  margin: 20px 0;
-  color: red;
-  text-align: center;
+.weather-details p {
+  font-size: 1.5rem;
+}
+
+.weather-main h3 {
+  font-size: 5rem;
+}
+
+.weather-main p {
+  font-size: 1.25rem;
 }
 </style>
