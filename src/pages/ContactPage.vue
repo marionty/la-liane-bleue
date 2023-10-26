@@ -12,7 +12,7 @@
               Contactez nous pour toute question sur les locations ou sur votre
               réservation.<br />
               Pour réserver,
-              <router-link to="/" class="reservation-link"
+              <router-link :to="{name:'home'}" class="reservation-link"
                 >merci de vous rendre sur la page d'accueil.</router-link
               ><br /><br />
               <strong>La Liane Bleue</strong><br />
@@ -27,71 +27,78 @@
             </p>
           </q-card-section>
           <q-card-section class="col-12 col-md-7">
-            <q-form @submit="submitForm" class="form-container">
+            <q-form @submit.prevent="submitForm" class="form-container">
               <div class="row">
                 <div class="col">
                   <q-input
-                    v-model="nom"
+                    v-model="data.nom"
                     label="Nom*"
                     outlined
                     dense
-                    required
                     class="q-mb-md"
+                    :rules="[val => (val && val.length <= 60) || 'Prénom ne doit pas dépasser 60 caractères']"
                   />
                 </div>
 
                 <div class="col pr-2">
                   <q-input
-                    v-model="prenom"
+                    v-model="data.prenom"
                     label="Prénom*"
                     outlined
                     dense
-                    required
                     class="q-mb-md"
+                    :rules="[val => (val && val.length <= 60) || 'Prénom ne doit pas dépasser 60 caractères']"
                   />
                 </div>
               </div>
               <q-input
-                v-model="telephone"
+                v-model="data.telephone"
                 label="Télèphone*"
                 outlined
                 dense
-                required
                 class="q-mb-md"
+                :rules="[
+                (val) =>
+                  (val && /^\d{8,}$/.test(val)) || 'Entrez au moins 8 chiffres',
+              ]"
               />
               <q-input
-                v-model="email"
+                v-model="data.email"
                 label="Adresse Email*"
                 outlined
                 dense
-                required
                 class="q-mb-md"
+                :rules="[
+            (val) =>
+              (val && /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val)) ||
+              'Entrez une adresse e-mail valide',
+          ]"
               />
 
               <q-input
-                v-model="sujet"
+                v-model="data.sujet"
                 label="Sujet*"
                 outlined
                 dense
-                required
                 class="q-mb-md"
+                :rules="[val => (val && val.length <= 120) || 'Sujet ne doit pas dépasser 120 caractères']"
               />
 
               <q-input
-                v-model="message"
+                v-model="data.message"
                 label="Votre message*"
                 outlined
                 dense
-                required
                 type="textarea"
                 class="q-mb-md"
+                :rules="[val => (val && val.length <= 1000) || 'Le message ne doit pas dépasser 1000 caractères']"
               />
               <p>* Champs obligatoires pour la soumission du formulaire</p>
               <div class="text-left q-mt-md">
                 <q-btn
-                  type="submit"
                   label="Envoyer"
                   style="background: #deb887"
+                  @click="submitForm"
                 />
               </div>
             </q-form>
@@ -116,37 +123,48 @@
 
 <script setup>
 import { ref } from "vue";
-
-// Importez Axios au début de votre fichier
+import { useQuasar } from "quasar";
 import axios from "axios";
+const $q = useQuasar();
 
-// Dans votre composant Vue.js, ajoutez une méthode pour gérer l'envoi du formulaire
-/*const submitForm = async () => {
+const data = ref({
+  nom: "",
+  prenom: "",
+  telephone: "",
+  email: "",
+  sujet: "",
+  message: "",
+});
+
+const submitForm = async () => {
   try {
-     Créez un objet avec les données du formulaire
-    const formData = {
-      nom: nom.value,
-      prenom: prenom.value,
-      telephone: telephone.value,
-      email: email.value,
-      sujet: sujet.value,
-      message: message.value,
-    };
-
-     Effectuez une requête POST pour envoyer les données à Strapi
     const response = await axios.post(
-      "http://localhost:1337/votre-route-api",
-      formData
+      "http://localhost:1337/api/contact-forms",
+      {
+        data: {
+        nom: data.value.nom,
+        prenom: data.value.prenom,
+        telephone: data.value.telephone,
+        email: data.value.email,
+        sujet: data.value.sujet,
+        message: data.value.message,
+        }
+      }
     );
-
-    if (response.status === 200) {
-      console.log("Formulaire soumis avec succès !");
-      // Réinitialisez les valeurs des champs du formulaire ici si nécessaire
-    }
+    $q.notify({
+      message: "votre message a bien étè envoyé",
+      color: "green-9",
+      position: "top",
+    });
   } catch (error) {
-    console.error("Erreur lors de la soumission du formulaire", error);
+    $q.notify({
+      message: "Erreur d'envoie du message",
+      caption: "Merci de réessayer ultérieurement",
+      color: "red-9",
+      position: "top",
+    });
   }
-};*/
+};
 </script>
 
 <style scoped>

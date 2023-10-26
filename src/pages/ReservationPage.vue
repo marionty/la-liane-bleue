@@ -13,8 +13,9 @@
     <h2>Liste des logements disponibles</h2>
     <div class="row justify-center location-card q-col-gutter-x-xl">
     <div class="col-12 col-md-4" v-for="rental in rentals" :key="rental.id">
-      <q-card>
-        <q-img :src="`http://localhost:1337${rental.attributes.cover.data.attributes.url}`" alt="Photo du logement"></q-img>
+      <q-card style="margin-bottom: 50px">
+        <q-img :src="`http://localhost:1337${rental.attributes.cover.data.attributes.url}`" height="300px"
+      fit="cover" alt="Photo du logement"></q-img>
         <q-card-section>
           <div class="text-h6">{{ rental.attributes.name }}</div>
           <div>{{ rental.attributes.content }}</div>
@@ -73,7 +74,7 @@ navigateToUser(response.data.data.id)
 }
 
 const navigateToUser = (reservationId) => {
-  console.log(reservationId)
+
   const routeData = {
     name: 'register',
     params: { reservationId: reservationId }

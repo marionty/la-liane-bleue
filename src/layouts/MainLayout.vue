@@ -23,26 +23,26 @@
 
         <!-- Menu complet pour les écrans larges -->
         <div v-show="isWideScreen">
-          <router-link to="/">
+          <router-link :to="{name:'home'}">
             <q-btn text-color="black" class="q-mx-xs" flat>Accueil</q-btn>
           </router-link>
-          <router-link to="/galerie">
+          <router-link :to="{name:'galerie'}">
             <q-btn text-color="black" class="q-mx-xs" flat>Galerie</q-btn>
           </router-link>
-          <router-link to="/activites">
+          <router-link :to="{name:'activites'}">
             <q-btn text-color="black" class="q-mx-xs" flat>Activités</q-btn>
           </router-link>
-          <router-link to="/apropos">
+          <router-link :to="{name:'apropos'}">
             <q-btn text-color="black" class="q-mx-xs" flat>À propos</q-btn>
           </router-link>
-          <router-link to="/blog">
+          <router-link :to="{name:'blog'}">
             <q-btn text-color="black" class="q-mx-xs" flat>Blog</q-btn>
           </router-link>
-          <router-link to="/contact">
+          <router-link :to="{name:'contact'}">
             <q-btn text-color="black" class="q-mx-xs" flat>Contact</q-btn>
           </router-link>
         </div>
-        <router-link to="/login">
+        <router-link :to="{name:'login'}">
         <q-btn
           v-if="isWideScreen"
           style="background: #deb887"

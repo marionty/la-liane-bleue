@@ -1,15 +1,83 @@
 <template>
-<p>En réservant, vous acceptez nos conditions générales de vente</p>
-<q-checkbox v-model="termsAccepted" label="J'ai lu et j'accepte les conditions générales de vente et le Règlement intérieur de la Liane Bleue pour une réservation de la location 'Alizée' ou pour une réservation de la location 'Bourbon'."/>
-<p>Nous vous remercions pour votre réservation. Un email de confirmation vous sera envoyé prochainement afin de confirmer les détails de votre réservation ainsi que vos coordonnées.</p>
+  <q-page padding>
 
-<p>Veuillez noter que votre réservation sera finalisée une fois que nous aurons réceptionné l'acompte de 30%. Les détails concernant le paiement de cet acompte seront inclus dans l'email de confirmation.</p>
+    <q-card class="q-mb-md">
+      <q-card-section class="bg-primary text-white text-center">
+        <div class="text-h4 q-my-md">
+          <q-icon name="done_all" size="2em" class="q-mr-md"/>
+          Réservation Confirmée
+        </div>
+      </q-card-section>
 
-<p>Nous vous remercions de votre confiance et restons à votre disposition pour toute question ou clarification.</p>
-:disabled="!termsAccepted"
+      <!-- Location Details Section -->
+      <q-card-section>
+        <div class="row items-center q-gutter-md">
+          <div class="col-6 col-md-4">
+
+          </div>
+          <div class="col-6 col-md-8">
+
+            <div><q-icon name="calendar_today" class="q-mr-sm"/>Arrivée : {{ reservation.attributes.arrivalDate }}</div>
+            <div><q-icon name="calendar_today" class="q-mr-sm"/>Départ : {{ reservation.attributes.departureDate }}</div>
+            <div><q-icon name="group" class="q-mr-sm"/>Voyageurs : {{ reservation.attributes.travelers }}</div>
+{{ reservation.attributes.rental.data.attributes.name }}
+          </div>
+        </div>
+      </q-card-section>
+
+
+      <q-card flat class="q-mt-lg">
+        <q-card-section>
+          <div class="text-h6 q-mb-md">Informations complémentaires</div>
+          <p>
+            Un email vous sera envoyé avec les détails de votre séjour. Il inclura également les conditions générales de vente et le Règlement intérieur à lire et à signer.
+          </p>
+          <q-divider inset class="q-my-md"/>
+          <p>
+            Pour valider définitivement votre réservation, un acompte de 30% est requis. Les détails de paiement vous seront communiqués par email.
+          </p>
+          <q-divider inset class="q-my-md"/>
+          <p class="text-center">
+            <q-icon name="info" size="lg" color="blue" class="q-mr-md"/>
+            Nous restons à votre disposition pour toute question ou précision. Merci de votre confiance !
+          </p>
+        </q-card-section>
+      </q-card>
+
+     </q-card>
+    </q-page>
 </template>
 
-<script setup>
 
-const termsAccepted = ref(false);
+<script setup>
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
+
+const reservationId = route.params.reservationId;
+const reservation = ref();
+
+async function getReservation(reservationId) {
+  try {
+    const response = await axios.get(`http://localhost:1337/api/reservations/${reservationId}/?populate=rental`);
+    reservation.value = response.data.data;
+    console.log(reservation.value)
+  } catch (err) {
+    console.error("Erreur lors de la récupération des détails de la réservation:", err);
+  }
+}
+
+onMounted(async () => {
+  await getReservation(reservationId);
+});
 </script>
+
+<style scoped>
+.location-image {
+  border-radius: 15px;
+  max-width: 100%;
+  height: auto;
+}
+</style>
