@@ -11,7 +11,7 @@
             <!-- Titre en grand en blanc sur l'overlay -->
             <h3 class="text-h4 q-ma-none">{{ activite.attributes.name }}</h3>
             <!-- Bouton en bas à droite -->
-            <q-btn class="activity-btn" :href="activite.attributes.url">En savoir plus</q-btn>
+            <q-btn class="activity-btn" :href="activite.attributes.url">EN SAVOIR PLUS</q-btn>
           </div>
         </div>
         <!-- Description en dessous de l'image -->

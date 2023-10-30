@@ -49,6 +49,7 @@ const rentals = ref([]);
 async function getRentals() {
   const response = await axios.get("http://localhost:1337/api/rentals?populate=cover");
   rentals.value = response.data.data;
+
 }
 onMounted(async () => {
   await getRentals();
