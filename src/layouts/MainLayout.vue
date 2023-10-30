@@ -137,6 +137,5 @@ const toggleUserMenu = () => {
 .q-img {
   width: 100px;
 }
-q-btn {
-}
+
 </style>

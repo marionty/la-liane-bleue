@@ -5,7 +5,11 @@
     <div class="row justify-center">
       <div class="col-12 col-md-5 presentation">
         <router-link to="/">
-          <div class="text-h4">LA LIANE BLEUE</div>
+          <q-img
+            src="logo.png"
+            alt="Logo de La liane bleue"
+            class="q-ml-md q-mr-md"
+          />
         </router-link>
         <p>
           Bienvenue sur <strong>La Liane Bleue</strong> - Votre source de
@@ -121,5 +125,8 @@ footer {
 .text-h6 {
   margin-top: 10px;
   margin-bottom: 10px;
+}
+.q-img {
+  width: 100px;
 }
 </style>

@@ -1,24 +1,24 @@
 <template>
-  <div :class="isFirstBlog ? 'large-card' : 'small-card'">
-    <q-img :src="url" style="max-width: 100%;">
-      <div class="overlay">
-        <div class="top-content">
-          <div class="text-h5 card-title">{{ title }}</div>
-        </div>
-        <div class="bottom-content">
-          <div class="author-date">{{ author }} - {{ date }}</div>
-          <div class="card-button">
-            <router-link :to="`/blogs/${slug}`">
-              <q-btn class="custom-button">{{ button }}</q-btn>
-            </router-link>
+  <div class="row justify-center">
+    <div class="col-10">
+      <q-img :src="url" fit="cover">
+        <div class="overlay">
+          <div class="top-content">
+            <div class="text-h5 card-title">{{ title }}</div>
+          </div>
+          <div class="bottom-content">
+            <div class="author-date">{{ author }} - {{ date }}</div>
+            <div class="card-button">
+              <router-link :to="`/blogs/${slug}`">
+                <q-btn class="custom-button">{{ button }}</q-btn>
+              </router-link>
+            </div>
           </div>
         </div>
-      </div>
-    </q-img>
+      </q-img>
+    </div>
   </div>
 </template>
-
-
 
 <script setup>
 import { defineProps } from "vue";
@@ -30,72 +30,56 @@ const { url, title, author, date, button, slug, isFirstBlog } = defineProps([
   "date",
   "button",
   "slug",
-  "isFirstBlog",
 ]);
 </script>
-
 <style scoped>
-
-.large-card,
-.small-card {
+/* Positionnement des cartes */
+.col-10{
+  height: 400px;
   position: relative;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  overflow: hidden;
 }
-
+.q-img {
+  width: 100%;
+  height: 100%;
+}
+/* Amélioration de la superposition */
 .overlay {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  padding: 15px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   color: white;
 }
 
+/* Espacement et mise en forme du contenu de la carte */
 .top-content {
   display: flex;
   flex-direction: column;
-}
-
-.card-title {
-  padding: 5px;
-  border-radius: 5px;
+  gap: 10px; /* Espacement entre les éléments du contenu supérieur */
 }
 
 .bottom-content {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  gap: 10px; /* Espacement entre les éléments du contenu inférieur */
 }
 
 .author-date {
-  padding: 5px;
-  border-radius: 5px;
+  font-size: 0.9em; /* Taille légèrement réduite pour que la date et l'auteur ne dominent pas */
 }
 
 .custom-button {
+  padding: 8px 15px; /* Un peu plus de padding pour rendre le bouton plus attrayant */
   background-color: #deb887;
   color: white;
 }
-
-.large-card {
-  width: 60%;
-  height: 800px;
-  margin-top: 50px;
-  margin-bottom: 50px;
-  display: flex;
-  flex-direction: column;
-}
-
-.small-card {
-  width: 30%;
-  margin-right: 10px;
-  
-
-
-
-}
-
 </style>

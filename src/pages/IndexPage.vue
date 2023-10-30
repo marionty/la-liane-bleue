@@ -123,7 +123,7 @@ app.mount("#app");
 const rentals = ref([]);
 onMounted(async () => {
   rentals.value = await fetchRentals();
-  console.log("onMounted", rentals.value);
+
 });
 async function fetchRentals() {
   const response = await axios.get(
@@ -131,7 +131,7 @@ async function fetchRentals() {
   );
 
   if (response.status === 200) {
-    console.log(response.data.data);
+  
     return response.data.data;
   }
 }

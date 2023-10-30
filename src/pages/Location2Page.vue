@@ -1,102 +1,104 @@
 <template>
-  <q-page-container>
-    <!-- Titre de la page -->
-    <h2 class="text-center mt-4">Bungalow à Saint-Leu, Île de la Réunion</h2>
-
+  <div class="header-container">
+    <page-header
+      subtitle="Location à Saint-Leu, Île de la Réunion"
+      title="Bourbon"
+    ></page-header>
+  </div>
+  <q-page-container class="q-ma-lg">
     <!-- Informations sur le bungalow -->
-    <div class="row">
-      <div class="col-md-6">
-        <q-img src="bourbon.JPG" alt="Bungalow à Saint-Leu" class="img-fluid" />
+    <div class="row q-mt-lg q-pa-lg">
+      <!-- Image -->
+      <div class="col-12 col-md-6">
+        <q-img src="bourbon.JPG" alt="Bungalow à Saint-Leu" class="rounded" />
       </div>
-      <div class="col-md-6">
-        <h3>Caractéristiques du Bungalow</h3>
-        <ul>
-          <li>Surface : 40 m2</li>
-          <li>Varangue et parking privé</li>
-          <li>Wi-Fi gratuit</li>
-          <li>Cuisine équipée</li>
-          <li>1 chambre avec 2 couchages</li>
-          <li>1 séjour avec 2 couchages et écran plat</li>
-          <li>1 salle de douche avec toilettes</li>
-        </ul>
+      <!-- Description -->
+      <div class="col-12 col-md-6">
+        <div class="description-container">
+          <h3>Description de la location</h3>
+          <p>
+            Capacité: de 2 ou 4 personnes <br /><br />
+            La location « Alizés », d’une superficie de 40m², comprenant une
+            chambre avec 2 couchages, d'un séjour avec 2 couchages, d'une
+            cuisine équipée, d'une salle de douche avec toilettes et une
+            varangue. Située au rez-de-jardin, elle vous offre une vue
+            imprenable sur l’océan.
+          </p>
+          <h4>Services</h4>
+          <ul class="services-list">
+            <li>Climatisation</li>
+            <li>Wi-Fi gratuit</li>
+            <li>Télèvison satellite, écran plat</li>
+            <li>
+              Linge de maison fourni (draps, taies, serviettes de toilette et
+              serviettes de bain).
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
 
-    <!-- Tarifs -->
-    <div class="mt-4">
-      <h3>Tarifs</h3>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Durée de Séjour</th>
-            <th>2 Personnes</th>
-            <th>4 Personnes</th>
-            <th>Nuitée (2 Personnes)</th>
-            <th>Nuitée (4 Personnes)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1ère semaine</td>
-            <td>520€</td>
-            <td>650€</td>
-            <td>75€</td>
-            <td>95€</td>
-          </tr>
-          <tr>
-            <td>À partir de la 2ème semaine</td>
-            <td>490€</td>
-            <td>600€</td>
-            <td>70€</td>
-            <td>86€</td>
-          </tr>
-          <tr>
-            <td>3ème semaine</td>
-            <td>455€</td>
-            <td>475€</td>
-            <td>65€</td>
-            <td>68€</td>
-          </tr>
-          <tr>
-            <td>Location de 30 jours et plus</td>
-            <td>61€</td>
-            <td>66€</td>
-            <td>61€</td>
-            <td>66€</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <!-- Conditions de réservation et Contact -->
+    <div class="row q-mt-lg q-pa-lg">
+      <!-- Conditions de réservation -->
+      <div class="col-12 col-md-6">
+        <q-card flat bordered class="q-pa-lg reservation-card rounded">
+          <h3>Conditions de Réservation</h3>
+          <p>
+            Un acompte de 30% doit être versé pour finaliser la réservation de
+            la location.
+          </p>
+        </q-card>
+      </div>
 
-    <!-- Conditions de réservation -->
-    <div class="mt-4">
-      <h3>Conditions de Réservation</h3>
-      <p>
-        Un acompte de 30% doit être versé dès que vous réservez pour confirmer
-        la réservation du bungalow. Pour plus d'informations ou pour réserver,
-        veuillez nous contacter.
-      </p>
+      <!-- Contact -->
+      <div class="col-12 col-md-6">
+        <q-card flat bordered class="q-pa-lg contact-card rounded">
+          <h3>Contactez-nous</h3>
+          <p>
+            Pour toute demande d'information, n'hésitez pas à nous contacter via
+            le formulaire de contact
+          </p>
+        </q-card>
+      </div>
     </div>
-
-    <!-- Contact -->
-    <div class="mt-4">
-      <h3>Contactez-nous</h3>
-      <p>
-        Pour toute demande d'information ou pour réserver, n'hésitez pas à nous
-        contacter :
-      </p>
-      <p>
-        Email : votre@email.com<br />
-        Téléphone : +33 123 456 789
-      </p>
+    <div class="col-12 col-md-4">
+      <LocationBar />
     </div>
   </q-page-container>
 </template>
 
+<script setup>
+import PageHeader from "components/PageHeader.vue";
+import LocationBar from "src/components/LocationBar.vue";
+</script>
+
 <style scoped>
-/* Styles personnalisés */
-.img-fluid {
-  max-width: 100%;
+.header-container {
+  text-align: center;
+  background-color: #deb787;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.description-container {
+  padding-left: 30px;
+}
+
+.services-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.services-list li::before {
+  content: "✓ ";
+  color: green;
+}
+
+.reservation-card,
+.contact-card {
+  background-color: #f5f5f5;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
 }
 </style>
-<script setup></script>

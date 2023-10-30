@@ -3,15 +3,15 @@
   <q-page-container>
     <div class="row justify-center">
   <div class="col-12 col-md-4" v-for="activite in activites" :key="activite.id">
-    <div class="activity-card q-ma-md">
-      <q-card>
+    <div class="q-ma-md">
+      <q-card :class="shadow-1" bordered class="activity-card">
         <!-- Image en arrière-plan avec un overlay noir -->
         <div class="card-image-container" :style="{ backgroundImage: 'url(http://localhost:1337' + activite.attributes.photo.data[0].attributes.formats.thumbnail.url + ')' }">
           <div class="card-overlay">
             <!-- Titre en grand en blanc sur l'overlay -->
             <h3 class="text-h4 q-ma-none">{{ activite.attributes.name }}</h3>
             <!-- Bouton en bas à droite -->
-            <q-btn class="activity-btn" label="{{ activite.attributes.button }}"></q-btn>
+            <q-btn class="activity-btn" :href="activite.attributes.url">En savoir plus</q-btn>
           </div>
         </div>
         <!-- Description en dessous de l'image -->
@@ -107,6 +107,9 @@ onMounted(async () => {
   border-radius: 10px;
   overflow: hidden;
   transition: transform 0.3s ease;
+  /*border:1px solid #deb887;*/
+  min-height:415px;
+
 }
 
 .activity-card:hover {
@@ -116,7 +119,7 @@ onMounted(async () => {
 .card-image-container {
   position: relative;
   width: 100%;
-  padding-bottom: 56.25%; /* Rendre l'image responsive */
+  padding-bottom: 56.25%;
   background-size: cover;
   background-position: center;
 }
@@ -131,12 +134,12 @@ onMounted(async () => {
   flex-direction: column;
   justify-content: space-between;
   padding: 20px;
-  background: rgba(0, 0, 0, 0.4); /* Overlay noir avec transparence */
+  background: rgba(0, 0, 0, 0.4);
   color: white;
 }
 
 .activity-btn {
-  align-self: flex-end; /* Aligner le bouton à droite */
+  align-self: flex-end;
   background-color: #deb887;
   color: white;
 }
