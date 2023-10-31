@@ -23,7 +23,7 @@
 <script setup>
 import { defineProps } from "vue";
 
-const { url, title, author, date, button, slug, isFirstBlog } = defineProps([
+const { url, title, author, date, button, slug } = defineProps([
   "url",
   "title",
   "author",
